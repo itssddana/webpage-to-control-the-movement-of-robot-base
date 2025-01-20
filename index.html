@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robot Control Panel</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f8ff;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            margin-top: 20px;
+            font-size: 2.5em;
+            color: #4CAF50;
+        }
+        .control-panel {
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            display: inline-block;
+        }
+        .controls {
+            display: grid;
+            grid-template-rows: auto auto auto auto;
+            grid-template-columns: auto auto auto;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+        }
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+        button:hover {
+            background-color: #ddd;
+            transform: scale(1.1);
+        }
+        .forward {
+            background-color: #4CAF50;
+            color: white;
+            grid-column: 2;
+        }
+        .backward {
+            background-color: #f44336;
+            color: white;
+            grid-column: 2;
+        }
+        .left {
+            background-color: #2196F3;
+            color: white;
+            grid-column: 1;
+        }
+        .right {
+            background-color: #FF9800;
+            color: white;
+            grid-column: 3;
+        }
+        .stop {
+            background-color: #9C27B0;
+            color: white;
+            grid-column: 2;
+        }
+        h2 {
+            margin-top: 20px;
+            font-size: 1.5em;
+        }
+        #current-direction {
+            font-size: 1.2em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="control-panel">
+        <h1>Robot Control Panel</h1>
+        <div class="controls">
+            <button class="forward" onclick="controlRobot('forward')">Forward</button>
+            <button class="left" onclick="controlRobot('left')">Left</button>
+            <button class="stop" onclick="controlRobot('stop')">Stop</button>
+            <button class="right" onclick="controlRobot('right')">Right</button>
+            <button class="backward" onclick="controlRobot('backward')">Backward</button>
+        </div>
+        <h2>Current Direction:</h2>
+        <p id="current-direction">Waiting for input...</p>
+    </div>
+
+    <script>
+        function controlRobot(direction) {
+            // Send direction to the server via AJAX
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "update_direction.php?direction=" + direction, true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    // Update the displayed direction on the page
+                    document.getElementById("current-direction").innerText = xhr.responseText;
+                }
+            };
+            xhr.send();
+        }
+    </script>
+</body>
+</html>
